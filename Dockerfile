@@ -30,3 +30,5 @@ RUN gradle build
 
 # Run Gradle to start the game (instead of building a JAR file)
 CMD ["gradle", "run"]
+
+hello
