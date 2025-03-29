@@ -8,9 +8,22 @@ WORKDIR /game
 COPY game/src /game/src
 COPY game/build.gradle /game/build.gradle
 
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y wget unzip
 
-# Give execute permissions to gradlew
-RUN chmod +x gradlew
+# Install dependencies for Gradle and JavaFX
+RUN apt-get update && \
+    apt-get install -y wget unzip libx11-dev libgl1-mesa-glx libxi6 libxtst6 libpng-dev libfontconfig1
+
+# Download Gradle 7.5.1
+WORKDIR /game
+RUN wget https://services.gradle.org/distributions/gradle-7.5.1-bin.zip && \
+    unzip gradle-7.5.1-bin.zip
+
+# Set environment variables for Gradle
+ENV GRADLE_HOME=/game/gradle-7.5.1
+ENV PATH=$GRADLE_HOME/bin:$PATH
 
 # Build the project using Gradle
 RUN gradle build
